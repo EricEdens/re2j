@@ -19,9 +19,9 @@ public class JmhRunner {
         new OptionsBuilder()
             .include(benchmarks)
             .forks(1)
-            .warmupIterations(5)
+            .warmupIterations(2)
             .warmupTime(TimeValue.seconds(1))
-            .measurementIterations(5)
+            .measurementIterations(2)
             .measurementTime(TimeValue.seconds(1))
             .mode(Mode.AverageTime)
             .build();
