@@ -17,6 +17,7 @@ class Machine {
 
   // A logical thread in the NFA.
   private static class Thread {
+
     Thread(int n) {
       this.cap = new int[n];
     }
@@ -229,12 +230,20 @@ class Machine {
           // Have match; finished exploring alternatives.
           break;
         }
-        if (!re2.prefix.isEmpty() && rune1 != re2.prefixRune && in.canCheckPrefix()) {
-          // Match requires literal prefix; fast search for it.
-          int advance = in.index(re2, pos);
-          if (advance < 0) {
-            break;
+        int advance = 0;
+        if (re2.prefixCharMatcher != null) {
+          int match = in.index(re2.prefixCharMatcher, pos);
+          if (match > 0) {
+            advance = match - pos;
           }
+          // System.out.println(advance);
+        } else if (!re2.prefix.isEmpty() && rune1 != re2.prefixRune && in.canCheckPrefix()) {
+          // Match requires literal prefix; fast search for it.
+          advance = in.index(re2, pos);
+        }
+        if (advance < 0) {
+          break;
+        } else if (advance > 0) {
           pos += advance;
           r = in.step(pos);
           rune = r >> 3;

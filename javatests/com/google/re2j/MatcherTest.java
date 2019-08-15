@@ -112,6 +112,7 @@ public class MatcherTest {
 
   @Test
   public void testFind() {
+    ApiTestUtils.testFind("aaa9 909", "\\d{3}", 0, "abcde");
     ApiTestUtils.testFind("abcdefgh", ".*[aeiou]", 0, "abcde");
     ApiTestUtils.testFind("abcdefgh", ".*[aeiou]", 1, "bcde");
     ApiTestUtils.testFind("abcdefgh", ".*[aeiou]", 2, "cde");

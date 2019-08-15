@@ -48,6 +48,8 @@ abstract class MachineInput {
   // in this input stream, or a negative value if not found.
   abstract int index(RE2 re2, int pos);
 
+  abstract int index(CharMatcher cm, int pos);
+
   // Returns a bitmask of EMPTY_* flags.
   abstract int context(int pos);
 
@@ -137,6 +139,11 @@ abstract class MachineInput {
     }
 
     @Override
+    int index(CharMatcher cm, int pos) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
     int context(int pos) {
       pos += this.start;
       int r1 = -1;
@@ -201,6 +208,11 @@ abstract class MachineInput {
       pos += start;
       int i = indexOf(str, re2.prefix, pos);
       return i < 0 ? i : i - pos;
+    }
+
+    @Override
+    int index(CharMatcher cm, int pos) {
+      return cm.indexOf(str, pos);
     }
 
     @Override

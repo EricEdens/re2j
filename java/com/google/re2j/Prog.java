@@ -74,6 +74,24 @@ final class Prog {
     return i.op == Inst.MATCH;
   }
 
+  CharMatcher prefixCharMatcher() {
+    final Inst i = skipNop(start);
+
+    if (i.op == Inst.RUNE && (i.arg & RE2.FOLD_CASE) == 0 && i.runes.length == 2) {
+      return new CharMatcher() {
+        private final int low = i.runes[0];
+        private final int high = i.runes[1];
+
+        @Override
+        protected boolean matches(char c) {
+          // System.out.println(String.format("c=%c, low=%d, high=%d%n", c, low, high));
+          return c >= low && c <= high;
+        }
+      };
+    }
+    return null;
+  }
+
   // startCond() returns the leading empty-width conditions that must be true
   // in any match.  It returns -1 (all bits set) if no matches are possible.
   int startCond() {

@@ -118,6 +118,7 @@ class RE2 {
   // @GuardedBy("this")
   private final Queue<Machine> machine = new ArrayDeque<Machine>();
   public Map<String, Integer> namedGroups;
+  CharMatcher prefixCharMatcher;
 
   // This is visible for testing.
   RE2(String expr) {
@@ -196,6 +197,8 @@ class RE2 {
     }
     if (!re2.prefix.isEmpty()) {
       re2.prefixRune = re2.prefix.codePointAt(0);
+    } else {
+      re2.prefixCharMatcher = prog.prefixCharMatcher();
     }
     re2.namedGroups = re.namedGroups;
     return re2;
